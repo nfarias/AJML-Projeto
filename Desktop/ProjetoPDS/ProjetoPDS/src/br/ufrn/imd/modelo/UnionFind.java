@@ -19,6 +19,10 @@ package br.ufrn.imd.modelo;
 	/**
 	 * Verifica qual é o pai da casa.
 	 */
+	
+	//@ requires c != null;
+	//@ assignable c;
+	//@ pure
 	public Casa find (Casa c){
 		while(c.getRank() > 0){
 			c= c.getParent();
@@ -28,6 +32,12 @@ package br.ufrn.imd.modelo;
 	/**
 	 * Verifica se o pai de duas casas é o mesmo.
 	 */
+	
+	//@ requires c1 != null;
+	//@ requires c2 != null;
+	//@ requires c1 != c2;
+	//@ ensures \result == true || \result == false;
+	//@ pure
 	public boolean connected (Casa c1, Casa c2){
 		return find(c1) == find(c2);
 	}
@@ -43,7 +53,7 @@ package br.ufrn.imd.modelo;
 	  @ 	ensures c2.getRank() == c2.getParent().getRank() + 1;
 	  @ also
 	  @ 	requires c1 != null;
-	  @		requires c2 !- null;
+	  @		requires c2 != null;
 	  @ 	assignable c1, c2;
 	  @ 	ensures c1.getParent() == c2;
 	  @ 	ensures c1.getRank() == c2.getParent().getRank() + 1;
@@ -66,7 +76,7 @@ package br.ufrn.imd.modelo;
 	/*@ requires c1 != null;
 	  @ requires c2 != null;
 	  @ assignable c1, c2;
-	  @ 
+	  @ ensures connected(c1,c2) == true;
 	 @*/
 	public void union(Casa c1, Casa c2){
 		if(!connected(c1,c2)){

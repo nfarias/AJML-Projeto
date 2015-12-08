@@ -10,6 +10,8 @@ public class GerenciadorArquivoIn implements GerenciadorIn
     private /*@ spec_public nullable @*/ Scanner lerArq;
     private /*@ spec_public nullable @*/ String nome;
     
+    //@ invariant 0 <= custo;
+    
     /*@ 
       @ requires nome = null;
       @ assignable nome, ler;
@@ -32,17 +34,6 @@ public class GerenciadorArquivoIn implements GerenciadorIn
       @ 	ensures 0 <= d;
       @		ensures lerArq != null;
       @		ensures arq != null;
-      @ also
-      @	public exceptional_behavior
-      @		requires arq == null;
-      @ 	requires lerArq == null;
-      @		requires nome != null;
-	  @ 	requires n == 0 ;
-      @ 	requires d == 0;
-      @		assignable arq, lerArq, n , d;
-      @		signals_only Exception;
-      @ 	signals (Exception e)
-      @			
       @*/
     public void leituraArquivo(){
         try{
@@ -55,7 +46,8 @@ public class GerenciadorArquivoIn implements GerenciadorIn
             System.out.println("Arquivo não encontrado");
         }
     }
-    //@ pure
+    //@ assignable custo;
+    //@ ensures 0 <= custo;
     public int getCusto(){
         return custo = lerArq.nextInt();
     }

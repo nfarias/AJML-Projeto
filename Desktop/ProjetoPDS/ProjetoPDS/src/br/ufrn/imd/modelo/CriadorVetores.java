@@ -1,10 +1,10 @@
 package br.ufrn.imd.modelo;
 
 public class CriadorVetores {
-    private int size;
-    private Casa[] casas;
-    private Aresta[] arestas;
-    private GerenciadorArquivoIn arquivo;
+    private /*@ spec_public @*/ int size;
+    private /*@ spec_public @*/Casa[] casas;
+    private /*@ spec_public @*/ Aresta[] arestas;
+    private /*@ spec_public @*/ GerenciadorArquivoIn arquivo;
     /**
      * Construtor da classe
      */
@@ -37,10 +37,10 @@ public class CriadorVetores {
     /**
      * Cria e retorna um array de casas
      */
-    /*@ requires arquivo != null
+    /*@ requires arquivo != null;
       @ requires casas != null;
       @ requires (\forall int i; 0 <= i && i < casas.length;
-      @            casas[i] == null)
+      @            casas[i] == null);
       @ assignable casas;
       @ ensures casas != null;
       @ ensures (\forall int j; 0 <= j && j < casas.length;
@@ -62,12 +62,12 @@ public class CriadorVetores {
       @ requires this.aresta != null;
       @
       @ requires (\forall int j; 0 <= j && j < arestas.length;
-      @            	arestas[i] == null)
+      @            	arestas[i] == null);
       @
       @ assignable aresta, custo, arestas, cont;
       @
       @ ensures arestas != null;
-      @ ensures 0 <= arestas.lenght 
+      @ ensures 0 <= arestas.lenght;
       @ ensures 0 <= custo;
       @ ensures (\forall int i; 0 <= i && i < arestas.length;
       @				arestas[i] != null);
@@ -92,7 +92,7 @@ public class CriadorVetores {
     /**
      * Chama o método para criar o array de casas e o de arestas. Retorna um array de arestas.
      */
-    
+    //@ ensures \result == criaArestas();
     public Aresta[] criaVetor(){
        vetorCasas();
        return criaArestas();
@@ -100,9 +100,10 @@ public class CriadorVetores {
     /**
      * Imprime as arestas.
      */
-    //@ pure
+    
     //@ requires arestas != null;
-    //@ requires 1 <= arestas.lenght
+    //@ requires 1 <= arestas.lenght;
+    //@ pure
     public void print(){
         for(Aresta aresta: arestas ){
             System.out.println(aresta.getCasa1().getId() + " " + aresta.getCasa2().getId() + " " + aresta.getCusto());
@@ -130,7 +131,6 @@ public class CriadorVetores {
        arestas = temp; 
     }
     
-
     /**
      * Retorna o valor d de ligações que cada casa poderá ter.
      */
@@ -157,7 +157,8 @@ public class CriadorVetores {
      */   
     /*@ requires 0 < n; 
       @ assignable n, aux;
-      @ ensures 1 <= n;
+      @ ensures 1 < n;
+      @ ensures \old (n) <= n;
       @*/
     private int fatorial(int n){
         int aux =n-1;
@@ -172,6 +173,7 @@ public class CriadorVetores {
      * para criar as arestas, sem repetição. Utiliza o método fatorial.
      */
     /*@ requires 0 < n;
+      @ assignable n;
       @ ensures 1 <= n;
       @*/
     private int tamArray(int n){
